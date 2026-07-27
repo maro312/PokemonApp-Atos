@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Shared/">
+    <Project Path="Core/Core.csproj" Id="b764934e-cb41-4ce8-99d2-0d9f4b50a592" />
+  </Folder>
+  <Project Path="API/API.csproj" />
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastructre/infrastructure.csproj" />
+</Solution>
