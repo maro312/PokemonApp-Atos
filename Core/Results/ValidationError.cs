@@ -1,4 +1,4 @@
-namespace Eradis.Core.Results;
+namespace Pokemon.Core.Results;
 
 public class ValidationError
 {
