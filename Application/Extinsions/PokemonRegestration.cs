@@ -5,11 +5,11 @@ namespace Application.Extinsions;
 
 public static partial class PokemonRegestration
 {
-    public static IServiceCollection AddOnlineCoachServices(this IServiceCollection services,
+    public static IServiceCollection AddPokemonServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         // Add application services
-        //services.AddApplicationServices();
+        services.AddServices();
         // add repositories
         services.AddRepositories();
         return services;
