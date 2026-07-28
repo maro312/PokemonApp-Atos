@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Application.Dtos.Countries;
 
-namespace Application.Dtos.Countries
+public class CreateUpdateCountryDto
 {
-    internal class CreateUpdateCountryDto
-    {
-    }
+    public string Name { get; set; }
 }
