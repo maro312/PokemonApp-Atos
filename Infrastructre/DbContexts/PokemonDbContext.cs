@@ -12,7 +12,7 @@ public class PokemonDbContext : DbContext
 
     #region DbSets
 
-    public DbSet<Pokemon> Pokemons { get; set; }
+    public DbSet<Domain.Entities.Pokemon> Pokemons { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Owner> Owners { get; set; }
     public DbSet<Country> Countries { get; set; }
