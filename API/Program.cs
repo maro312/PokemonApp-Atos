@@ -1,4 +1,5 @@
 
+using Application.Extinsions;
 using infrastructure.Data.Seeding;
 using infrastructure.DbContexts;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,8 @@ namespace API
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddPokemonServices(builder.Configuration);
 
             var app = builder.Build();
 

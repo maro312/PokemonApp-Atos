@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Core.Dtos;
 
-namespace Application.Dtos.Countries
+namespace Application.Dtos.Countries;
+
+public class CountryDto : BaseDto<int>
 {
-    internal class CountryDto
-    {
-    }
+    public string Name { get; set; }
 }

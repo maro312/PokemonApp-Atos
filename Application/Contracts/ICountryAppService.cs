@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.Contracts.Shared;
+using Application.Dtos.Countries;
+using Pokemon.Core.Results;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface ICountryAppService : ICrudAppService<CreateUpdateCountryDto, Result<CountryDto>, int, Result<List<CountryDto>>>
 {
-    internal interface ICountryAppService
-    {
-    }
 }

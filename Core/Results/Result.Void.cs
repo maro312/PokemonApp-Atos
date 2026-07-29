@@ -1,6 +1,6 @@
 using Core.Enums;
 
-namespace Eradis.Core.Results;
+namespace Pokemon.Core.Results;
 
 public class Result : Result<Result>
 {
