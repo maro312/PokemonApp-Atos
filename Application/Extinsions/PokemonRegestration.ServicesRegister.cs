@@ -11,6 +11,10 @@ public static partial class PokemonRegestration
     {
         services.AddTransient<ICountryAppService, CountryAppService>();
         services.AddTransient<IOwnerAppService, OwnerAppService>();
+        services.AddTransient<ICategoryAppService, Application.Services.Categories.CategoryAppService>();
+        services.AddTransient<IPokemonAppService, Application.Services.Pokemons.PokemonAppService>();
+        services.AddTransient<IReviewAppService, Application.Services.Reviews.ReviewAppService>();
+        services.AddTransient<IReviewerAppService, Application.Services.Reviewers.ReviewerAppService>();
         return services;
     }
 }
