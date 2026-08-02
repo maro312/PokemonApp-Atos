@@ -14,19 +14,17 @@ public class Repository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where
     {
         _context = context;
     }
-
+    
     ///<inheritdoc/>
-    public async Task<bool> AddAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
         await _context.Set<TEntity>().AddAsync(entity);
-        return await _context.SaveChangesAsync() > 0;
     }
 
     ///<inheritdoc/>
-    public async Task<bool> UpdateAsync(TEntity entity)
+    public async Task UpdateAsync(TEntity entity)
     {
         _context.Set<TEntity>().Update(entity);
-        return await _context.SaveChangesAsync() > 0;
     }
 
     ///<inheritdoc/>
@@ -35,35 +33,37 @@ public class Repository<TEntity, TKey> : IGenericRepository<TEntity, TKey> where
         return _context.Set<TEntity>().AsQueryable();
     }
 
+
     ///<inheritdoc/>
     public virtual async Task<ICollection<TEntity>> GetAllAsync()
     {
-        return await _context.Set<TEntity>().ToListAsync();
+        return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
     }
 
     ///<inheritdoc/>
     public async Task<IList<TEntity>> GetAllPagenatedAsync(int pageSize, int pageNumber)
     {
-        return await _context.Set<TEntity>().Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
+        return await _context.Set<TEntity>().AsNoTracking().Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
     }
-
     ///<inheritdoc/>
-    public async Task<bool> DeleteAsync(TEntity entity)
+    public async Task DeleteAsync(TEntity entity)
     {
         _context.Set<TEntity>().Remove(entity);
-        return await _context.SaveChangesAsync() > 0;
     }
-
     ///<inheritdoc/>
     public virtual async Task<TEntity?> GetByIdAsync(TKey id)
     {
         return await _context.Set<TEntity>().FirstOrDefaultAsync(e => e.Id.Equals(id));
     }
+    public virtual async Task<TEntity?> GetByIdAsNoTrackingAsync(TKey id)
+    {
+        return await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id));
+    }
 
     ///<inheritdoc/>
     public Task<bool> ExistsAsync(TKey id)
     {
-        return _context.Set<TEntity>().AnyAsync(e => e.Id.Equals(id));
+        return _context.Set<TEntity>().AsNoTracking().AnyAsync(e => e.Id.Equals(id));
     }
 
     ///<inheritdoc/>

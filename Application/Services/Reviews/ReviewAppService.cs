@@ -40,7 +40,10 @@ public class ReviewAppService : IReviewAppService
 
     public async Task<Result<ReviewDto>> GetByIdAsync(int id)
     {
-        Review? entity = await _repository.GetAllQuerable().Include(r => r.Reviewer).FirstOrDefaultAsync(r => r.Id == id);
+        Review? entity = await _repository.GetAllQuerable()
+            .AsNoTracking()
+            .Include(r => r.Reviewer)
+            .FirstOrDefaultAsync(r => r.Id == id);
         if (entity is null)
         {
             return Result<ReviewDto>.NotFound($"Review with ID {id} not found.");
@@ -51,7 +54,10 @@ public class ReviewAppService : IReviewAppService
 
     public async Task<Result<List<ReviewDto>>> GetAllAsync()
     {
-        List<Review> entities = await _repository.GetAllQuerable().Include(r => r.Reviewer).ToListAsync();
+        List<Review> entities = await _repository.GetAllQuerable()
+            .AsNoTracking()
+            .Include(r => r.Reviewer)
+            .ToListAsync();
         List<ReviewDto> dtos = entities.Select(e => e.ToDto()).ToList();
         return Result<List<ReviewDto>>.Success(dtos);
     }

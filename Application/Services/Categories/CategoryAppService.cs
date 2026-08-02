@@ -39,7 +39,7 @@ public class CategoryAppService : ICategoryAppService
 
     public async Task<Result<CategoryDto>> GetByIdAsync(int id)
     {
-        Category? entity = await _repository.GetByIdAsync(id);
+        Category? entity = await _repository.GetByIdAsNoTrackingAsync(id);
         if (entity is null)
         {
             return Result<CategoryDto>.NotFound($"Category with ID {id} not found.");
