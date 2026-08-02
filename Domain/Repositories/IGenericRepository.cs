@@ -7,13 +7,13 @@ public interface IGenericRepository<TEntity, TId> where TEntity : class
     /// </summary>
     /// <param name="entity"></param>
     /// <returns> returns true if success otherwise false</returns>
-    Task<bool> AddAsync(TEntity entity);
+    Task AddAsync(TEntity entity);
     /// <summary>
     /// Edit entity
     /// </summary>
     /// <param name="entity"> </param>
     /// <returns> returns true if success otherwise false</returns>
-    Task<bool> UpdateAsync(TEntity entity);
+    Task UpdateAsync(TEntity entity);
     /// <summary>
     /// Get all
     /// </summary>
@@ -26,7 +26,7 @@ public interface IGenericRepository<TEntity, TId> where TEntity : class
     /// </summary>
     /// <param name="entity"></param>
     /// <returns> returns true if success otherwise false </returns>
-    Task<bool> DeleteAsync(TEntity entity);
+    Task DeleteAsync(TEntity entity);
 
     /// <summary>
     /// Get entity
@@ -34,6 +34,13 @@ public interface IGenericRepository<TEntity, TId> where TEntity : class
     /// <param name="id"></param>
     /// <returns> returns specific entity </returns>
     Task<TEntity?> GetByIdAsync(TId id);
+
+    /// <summary>
+    /// Get entity as no tracking
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<TEntity?> GetByIdAsNoTrackingAsync(TId id);
 
     /// <summary>
     /// Check if entity exists
