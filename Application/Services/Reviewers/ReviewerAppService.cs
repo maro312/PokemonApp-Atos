@@ -39,7 +39,7 @@ public class ReviewerAppService : IReviewerAppService
 
     public async Task<Result<ReviewerDto>> GetByIdAsync(int id)
     {
-        Reviewer? entity = await _repository.GetByIdAsync(id);
+        Reviewer? entity = await _repository.GetByIdAsNoTrackingAsync(id);
         if (entity is null)
         {
             return Result<ReviewerDto>.NotFound($"Reviewer with ID {id} not found.");

@@ -39,7 +39,7 @@ public class CountryAppService : ICountryAppService
 
     public async Task<Result<CountryDto>> GetByIdAsync(int id)
     {
-        Country? entity = await _repository.GetByIdAsync(id);
+        Country? entity = await _repository.GetByIdAsNoTrackingAsync(id);
         if (entity is null)
         {
             return Result<CountryDto>.NotFound($"Country with ID {id} not found.");

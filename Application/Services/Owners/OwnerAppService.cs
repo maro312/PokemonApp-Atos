@@ -41,7 +41,8 @@ public class OwnerAppService : IOwnerAppService
     public async Task<Result<OwnerDto>> GetByIdAsync(int id)
     {
         IQueryable<Owner>? query = _repository.GetAllQuerable();
-        Owner? entity = await query.Where(x => x.Id == id)
+        Owner? entity = await query.AsNoTracking()
+            .Where(x => x.Id == id)
             .Include(x => x.Country)
             .FirstOrDefaultAsync();
         if (entity is null)
@@ -53,7 +54,8 @@ public class OwnerAppService : IOwnerAppService
     }
     public async Task<Result<List<OwnerDto>>> GetAllAsync()
     {
-        IQueryable<Owner>? query = _repository.GetAllQuerable();
+        IQueryable<Owner>? query = _repository.GetAllQuerable()
+            .AsNoTracking();
         List<Owner> entities = (await query.Include(x => x.Country).ToListAsync());
         List<OwnerDto> dtos = entities.Select(e => e.ToDto()).ToList();
         return Result<List<OwnerDto>>.Success(dtos);

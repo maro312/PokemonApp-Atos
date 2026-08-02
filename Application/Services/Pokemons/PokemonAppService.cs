@@ -41,7 +41,11 @@ public class PokemonAppService : IPokemonAppService
 
     public async Task<Result<PokemonDto>> GetByIdAsync(int id)
     {
-        PokemonEntity? entity = await _repository.GetAllQuerable().Include(p => p.PokemonCategories).ThenInclude(pc => pc.Category).FirstOrDefaultAsync(p => p.Id == id);
+        PokemonEntity? entity = await _repository.GetAllQuerable()
+            .AsNoTracking()
+            .Include(p => p.PokemonCategories)
+            .ThenInclude(pc => pc.Category)
+            .FirstOrDefaultAsync(p => p.Id == id);
         if (entity is null)
         {
             return Result<PokemonDto>.NotFound($"Pokemon with ID {id} not found.");
@@ -52,7 +56,11 @@ public class PokemonAppService : IPokemonAppService
 
     public async Task<Result<List<PokemonDto>>> GetAllAsync()
     {
-        List<PokemonEntity> entities = await _repository.GetAllQuerable().Include(p => p.PokemonCategories).ThenInclude(pc => pc.Category).ToListAsync();
+        List<PokemonEntity> entities = await _repository.GetAllQuerable()
+            .AsNoTracking()
+            .Include(p => p.PokemonCategories)
+            .ThenInclude(pc => pc.Category)
+            .ToListAsync();
         List<PokemonDto> dtos = entities.Select(e => e.ToDto()).ToList();
         return Result<List<PokemonDto>>.Success(dtos);
     }
