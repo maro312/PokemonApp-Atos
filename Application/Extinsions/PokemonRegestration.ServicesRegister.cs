@@ -15,6 +15,7 @@ public static partial class PokemonRegestration
         services.AddTransient<IPokemonAppService, Application.Services.Pokemons.PokemonAppService>();
         services.AddTransient<IReviewAppService, Application.Services.Reviews.ReviewAppService>();
         services.AddTransient<IReviewerAppService, Application.Services.Reviewers.ReviewerAppService>();
+        services.AddTransient<IAuthenticationAppService, Application.Services.Authentication.AuthenticationAppService>();
         return services;
     }
 }
