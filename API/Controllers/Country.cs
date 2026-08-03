@@ -1,108 +1,109 @@
 ﻿using Application.Contracts;
 using Application.Dtos.Countries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers
+namespace API.Controllers;
+
+[Authorize]
+[Route("api/[controller]")]
+[ApiController]
+public class Country : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class Country : ControllerBase
+    private readonly ICountryAppService _countryAppService;
+
+    public Country(ICountryAppService countryAppService)
     {
-        private readonly ICountryAppService _countryAppService;
+        _countryAppService = countryAppService;
+    }
 
-        public Country(ICountryAppService countryAppService)
+    /// <summary>
+    /// Get all countries.
+    /// </summary>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _countryAppService.GetAllAsync();
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(result.Errors.FirstOrDefault());
+    }
+
+    /// <summary>
+    /// Get a country by its ID.
+    /// </summary>
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await _countryAppService.GetByIdAsync(id);
+
+        if (!result.IsSuccess)
         {
-            _countryAppService = countryAppService;
+            return NotFound(result.Errors.FirstOrDefault());
         }
 
-        /// <summary>
-        /// Get all countries.
-        /// </summary>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        return Ok(result.Value);
+    }
+
+    /// <summary>
+    /// Create a new country.
+    /// </summary>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Create([FromBody] CreateUpdateCountryDto input)
+    {
+        var result = await _countryAppService.CreateAsync(input);
+
+        if (!result.IsSuccess)
         {
-            var result = await _countryAppService.GetAllAsync();
-            return result.IsSuccess
-                ? Ok(result.Value)
-                : BadRequest(result.Errors.FirstOrDefault());
+            return BadRequest(result.Errors.FirstOrDefault());
         }
 
-        /// <summary>
-        /// Get a country by its ID.
-        /// </summary>
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetById(int id)
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = result.Value.Id },
+            result.Value
+        );
+    }
+
+    /// <summary>
+    /// Update an existing country.
+    /// </summary>
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(int id, [FromBody] CreateUpdateCountryDto input)
+    {
+        var result = await _countryAppService.UpdateAsync(input, id);
+
+        if (!result.IsSuccess)
         {
-            var result = await _countryAppService.GetByIdAsync(id);
-
-            if (!result.IsSuccess)
-            {
-                return NotFound(result.Errors.FirstOrDefault());
-            }
-
-            return Ok(result.Value);
+            return BadRequest(result);
         }
 
-        /// <summary>
-        /// Create a new country.
-        /// </summary>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CreateUpdateCountryDto input)
+        return Ok(result.Value);
+    }
+
+    /// <summary>
+    /// Delete a country by its ID.
+    /// </summary>
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _countryAppService.DeleteAsync(id);
+
+        if (!result.IsSuccess)
         {
-            var result = await _countryAppService.CreateAsync(input);
-
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result.Errors.FirstOrDefault());
-            }
-
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = result.Value.Id },
-                result.Value
-            );
+            return NotFound(result.Errors.FirstOrDefault());
         }
 
-        /// <summary>
-        /// Update an existing country.
-        /// </summary>
-        [HttpPut("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update(int id, [FromBody] CreateUpdateCountryDto input)
-        {
-            var result = await _countryAppService.UpdateAsync(input, id);
-
-            if (!result.IsSuccess)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result.Value);
-        }
-
-        /// <summary>
-        /// Delete a country by its ID.
-        /// </summary>
-        [HttpDelete("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _countryAppService.DeleteAsync(id);
-
-            if (!result.IsSuccess)
-            {
-                return NotFound(result.Errors.FirstOrDefault());
-            }
-
-            return Ok(result.Value);
-        }
+        return Ok(result.Value);
     }
 }
