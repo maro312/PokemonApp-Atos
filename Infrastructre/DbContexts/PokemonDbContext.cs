@@ -1,9 +1,10 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace infrastructure.DbContexts;
 
-public class PokemonDbContext : DbContext
+public class PokemonDbContext : IdentityDbContext
 {
     public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
     {
