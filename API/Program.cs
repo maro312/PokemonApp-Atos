@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using API.Middleware;
 
 namespace API
 {
@@ -110,6 +111,8 @@ namespace API
             builder.Services.AddPokemonServices(builder.Configuration);
 
             var app = builder.Build();
+            
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             if (args.Length == 1 && args[0].ToLower() == "seeddata")
                 SeedData(app);
